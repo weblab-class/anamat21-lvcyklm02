@@ -4,7 +4,7 @@ import GoogleLogin, { GoogleLogout } from "react-google-login";
 import "../../utilities.css";
 import "./Skeleton.css";
 
-//TODO: REPLACE WITH YOUR OWN CLIENT_ID
+// edited to project's google client_Id
 const GOOGLE_CLIENT_ID = "906485839568-enlavp0b4pbshg8vaopc8019aet1rfie.apps.googleusercontent.com";
 
 const Skeleton = ({ userId, handleLogin, handleLogout }) => {
