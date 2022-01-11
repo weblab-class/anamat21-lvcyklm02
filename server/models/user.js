@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
   name: String,
   googleid: String,
+  current_chores: [ChoreSchema],
+  profile_picture: String,
+  pronouns: String,
+  phone_number: String,
+  points: Number,
 });
 
 // compile model from schema
