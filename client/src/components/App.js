@@ -43,7 +43,7 @@ const App = () => {
     <>
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <Status path="/" props={name:"Ana", chore:"Dishes", groupPoints:50,userPoints:21} />
+        <Status path="/" name={"Ana"} chore={"Dishes"} groupPoints={50} userPoints={21} />
         <NotFound default />
       </Router>
     </>
