@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
+import Status from "./pages/Status.js";
 
 import "../utilities.css";
 
@@ -42,6 +43,7 @@ const App = () => {
     <>
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Status path="/" props={name:"Ana", chore:"Dishes", groupPoints:50,userPoints:21} />
         <NotFound default />
       </Router>
     </>
