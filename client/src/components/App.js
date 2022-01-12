@@ -42,14 +42,7 @@ const App = () => {
   return (
     <>
       <Router>
-        <Status
-          path="/"
-          name={"Ana"}
-          chore={"Dishes"}
-          group={"iHouse"}
-          groupPoints={50}
-          userPoints={21}
-        />
+        <Status path="/" />
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <NotFound default />
       </Router>

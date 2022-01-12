@@ -11,6 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
+//const Group = require("./models/group");
 
 // import authentication library
 const auth = require("./auth");
@@ -32,9 +33,16 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
+// router.get("/group", (req, res) => {
+//   Group.find({group: req.query.}).then((group) => {
+//   res.send(group);
+//   });
+// });
+
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user) socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  if (req.user)
+    socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
   res.send({});
 });
 
