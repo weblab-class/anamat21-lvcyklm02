@@ -11,11 +11,14 @@ const NavBar = () => {
     <nav className="NavBar-container">
       <div className="NavBar-title">PodMates</div>
       <div className="NavBar-linkContainer">
+        <Link to="/" className="NavBar-link">
+          Skeleton
+        </Link>
         <Link to="/status/" className="NavBar-link">
           Status
         </Link>
-        <Link to="/" className="NavBar-link">
-          Skeleton
+        <Link to="/chores/" className="NavBar-link">
+          Chores
         </Link>
       </div>
     </nav>

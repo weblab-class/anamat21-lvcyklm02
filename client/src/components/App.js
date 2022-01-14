@@ -4,6 +4,7 @@ import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import Status from "./pages/Status.js";
+import Chores from "./pages/Chores.js";
 
 import "../utilities.css";
 
@@ -46,6 +47,7 @@ const App = () => {
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Status path="/status/" userId={userId} />
+        <Chores path="/chores/" />
         <NotFound default />
       </Router>
     </>
