@@ -33,6 +33,12 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
+router.get("/user", (req, res) => {
+  User.findById(req.query.userid).then((user) => {
+    res.send(user);
+  });
+});
+
 // router.get("/group", (req, res) => {
 //   Group.find({group: req.query.}).then((group) => {
 //   res.send(group);
