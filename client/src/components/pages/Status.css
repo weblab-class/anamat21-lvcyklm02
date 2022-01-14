@@ -23,7 +23,7 @@
   margin-right: 100px;
   padding: 75px;
   border-radius: var(--m);
-  border-width: medium;
+  border-width: 50px;
   border-style: groove;
   border: black;
 }

@@ -9,19 +9,17 @@ import { get, post } from "../../utilities";
 import { ensureNotLoggedIn } from "connect-ensure-login/lib";
 
 const Status = (props) => {
-  const [user, setUser] = useState(undefined);
+  //   const [user, setUser] = useState(undefined);
 
-  console.log(props);
   //   useEffect(() => {
+  //     get(`/api/user`, { userid: props.userId }).then((userObj) => setUser(userObj));
+  //   }, []);
 
-  useEffect(() => {
-    document.title = "Profile Page";
-    get(`/api/user`, { userid: props.userId }).then((userObj) => setUser(userObj));
-  }, []);
+  //   if (!user) {
+  //     return <div> Loading! </div>;
+  //   }
 
-  if (!user) {
-    return <div> Loading! </div>;
-  }
+  const user = { name: "Ana Mata" };
 
   return (
     // building image
