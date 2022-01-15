@@ -1,0 +1,52 @@
+/*flexbox*/
+.box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 16px;
+}
+
+.item {
+  margin: 8px;
+  padding: 16px;
+  background-color: antiquewhite;
+}
+
+.container-chores-schedule {
+  flex-basis: 40rem;
+}
+.container-chores-panel {
+  flex-basis: 5rem;
+}
+
+/* spacing */
+
+table {
+  table-layout: fixed;
+  width: 200px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead th:nth-child(1) {
+  width: 60%;
+}
+
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+thead th:nth-child(3) {
+  width: 20%;
+}
+
+th,
+td {
+  padding: 4px;
+}
+
+/*caption*/
+caption {
+  font-size: 20px;
+  font-style: italic;
+}
