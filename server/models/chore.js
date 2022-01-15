@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const ChoreSchema = new mongoose.Schema({
-  name: String,
-  timesPerWeek: Number,
-  maxAssignment: Number,
+  content: String,
+  freq: Number,
+  hand: Number,
   currentlyAssigned: [String],
 });
 

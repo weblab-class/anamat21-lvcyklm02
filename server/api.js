@@ -12,6 +12,7 @@ const express = require("express");
 // import models so we can interact with the database
 const User = require("./models/user");
 //const Group = require("./models/group");
+const Chore = require("./models/chore");
 
 // import authentication library
 const auth = require("./auth");
@@ -55,6 +56,24 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.post("/chore", (req, res) => {
+  const newChore = new Chore({
+    content: req.body.content,
+    freq: req.body.freq,
+    hand: req.body.hand,
+    currentlyAssigned: [],
+  });
+
+  newChore.save().then((chore) => {
+    res.send(chore);
+  });
+});
+
+router.get("/chore", (req, res) => {
+  //return all chores
+  Chore.find({}).then((chores) => res.send(chores));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

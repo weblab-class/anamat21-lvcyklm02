@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChoreEvent, NewChoreEvent } from "./ChoreEvent";
+import { get } from "../../utilities";
 
 const ChoreList = (props) => {
   // states: list of chore events
   const [choreList, setChoreList] = useState([]);
 
   //load chore list from api
+  useEffect(() => {
+    get("/api/chore", {}).then((chores) => {
+      setChoreList(chores);
+    });
+  }, [choreList]);
+
+  const addChoreToState = (choreObj) => {
+    setChoreList([choreObj].concat(choreList));
+  };
 
   return (
     <>
@@ -19,11 +29,17 @@ const ChoreList = (props) => {
           </tr>
         </thead>
         <tbody>
-          <ChoreEvent content="empty dish rack" freq={1} hand={3} />
-          <ChoreEvent content="sweep kitchen floor" freq={3} hand={3} />
+          {choreList.map((choreItem, index) => (
+            <ChoreEvent
+              content={choreItem.content}
+              freq={choreItem.freq}
+              hand={choreItem.hand}
+              key={`chore-${index}`}
+            />
+          ))}
         </tbody>
       </table>
-      <NewChoreEvent />
+      <NewChoreEvent addChoreToState={addChoreToState} />
     </>
   );
 };
