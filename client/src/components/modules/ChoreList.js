@@ -17,6 +17,12 @@ const ChoreList = (props) => {
     setChoreList([choreObj].concat(choreList));
   };
 
+  //deletes from db naturally re-renders
+  const deleteChoreObj = (choreId) => {
+    console.log("attempting to delete", choreId);
+    //deletes from db using choreId
+  };
+
   return (
     <>
       <table>
@@ -35,6 +41,7 @@ const ChoreList = (props) => {
               freq={choreItem.freq}
               hand={choreItem.hand}
               key={`chore-${index}`}
+              deleteChore={() => deleteChoreObj(choreItem._id)}
             />
           ))}
         </tbody>

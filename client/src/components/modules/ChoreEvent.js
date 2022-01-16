@@ -5,7 +5,7 @@ import { post } from "../../utilities";
  * ChoreEvent is a component for unique chore contents
  *
  * Proptypes
- * @param {string} _id of the chore //Not done yet
+ * @param func deleteChore(_id) a function call to delete chore from list and db
  * @param {[string]} freq // M,T,W,R,F,S,U
  * @param {number} hand // number of people needed
  * @param {string} content of chore
@@ -16,6 +16,9 @@ const ChoreEvent = (props) => {
       <td>{props.content}</td>
       <td>{props.freq}</td>
       <td>{props.hand}</td>
+      <td>
+        <button onClick={props.deleteChore}>x</button>
+      </td>
     </tr>
   );
 };
