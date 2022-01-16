@@ -6,7 +6,7 @@ import "./NavBar.css";
 /**
  * The navigation bar at the top of all pages. Takes no props.
  */
-const NavBar = () => {
+const NavBar = (props) => {
   return (
     <nav className="NavBar-container">
       <div className="NavBar-title">PodMates</div>
@@ -14,12 +14,21 @@ const NavBar = () => {
         <Link to="/" className="NavBar-link">
           Skeleton
         </Link>
-        <Link to="/status/" className="NavBar-link">
-          Status
-        </Link>
-        <Link to="/chores/" className="NavBar-link">
-          Chores
-        </Link>
+        {props.userId && (
+          <Link to={`/status/${props.userId}`} className="NavBar-link">
+            Status
+          </Link>
+        )}
+        {props.userId && (
+          <Link to={`/chores/${props.userId}`} className="NavBar-link">
+            Chores
+          </Link>
+        )}
+        {props.userId && (
+          <Link to={`/announcements/${props.userId}`} className="NavBar-link">
+            Announcements
+          </Link>
+        )}
       </div>
     </nav>
   );

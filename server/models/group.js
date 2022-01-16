@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const GroupSchema = new mongoose.Schema({
   name: String,
-  googleid: String,
-  members: [UserSchema],
+  members: [String],
   chores: [String],
   points: Number,
 });

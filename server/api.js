@@ -11,8 +11,9 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-//const Group = require("./models/group");
 const Chore = require("./models/chore");
+const Group = require("./models/group");
+const Announcement = require("./models/announcement");
 
 // import authentication library
 const auth = require("./auth");
@@ -33,18 +34,6 @@ router.get("/whoami", (req, res) => {
 
   res.send(req.user);
 });
-
-router.get("/user", (req, res) => {
-  User.findById(req.query.userid).then((user) => {
-    res.send(user);
-  });
-});
-
-// router.get("/group", (req, res) => {
-//   Group.find({group: req.query.}).then((group) => {
-//   res.send(group);
-//   });
-// });
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
@@ -73,6 +62,44 @@ router.post("/chore", (req, res) => {
 router.get("/chore", (req, res) => {
   //return all chores
   Chore.find({}).then((chores) => res.send(chores));
+});
+
+router.get("/user", (req, res) => {
+  User.findById(req.query.userid).then((user) => {
+    res.send(user);
+  });
+});
+
+router.get("/group", auth.ensureLoggedIn, (req, res) => {
+  Group.find({ group: req.query.groupid }).then((group) => {
+    res.send(group);
+  });
+});
+
+router.post("/group", auth.ensureLoggedIn, (req, res) => {
+  const newGroup = new Group({
+    name: req.body.name,
+    members: [req.user._id],
+    chores: [],
+    points: 0,
+  });
+
+  newGroup.save().then((group) => res.send(group));
+});
+
+router.get("/announcement", (req, res) => {
+  Announcement.find({}).then((ann) => {
+    res.send(ann);
+  });
+});
+
+router.post("/announcement", (req, res) => {
+  const newAnnouncement = new Announcement({
+    content: req.body.content,
+    author: req.user.name,
+  });
+
+  newAnnouncement.save().then((announce) => res.send(announce));
 });
 
 // anything else falls to this "not found" case

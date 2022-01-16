@@ -6,21 +6,27 @@ import "./Status.css";
 import { socket } from "../../client-socket.js";
 
 import { get, post } from "../../utilities";
-import { ensureNotLoggedIn } from "connect-ensure-login/lib";
+import { Redirect } from "@reach/router";
+
+/**
+ * Status page
+ *
+ * Proptypes
+ * param {string} userId is the user id from login in
+ */
 
 const Status = (props) => {
-  //   const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState();
 
-  //   useEffect(() => {
-  //     get(`/api/user`, { userid: props.userId }).then((userObj) => setUser(userObj));
-  //   }, []);
+  useEffect(() => {
+    get("/api/user", { userid: props.userId }).then((userObj) => setUser(userObj));
+  }, []);
 
-  //   if (!user) {
-  //     return <div> Loading! </div>;
-  //   }
+  console.log(user);
 
-  const user = { name: "Ana Mata" };
-
+  if (!user) {
+    return <div> Loading! </div>;
+  }
   return (
     // building image
     <>
