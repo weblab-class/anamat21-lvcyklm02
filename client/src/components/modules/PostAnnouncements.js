@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
+import "./PostAnnouncements.css";
 
 import Input from "./Input.js";
 
@@ -11,7 +12,7 @@ import { Redirect } from "@reach/router";
 
 const AnnouncementRender = (props) => {
   return (
-    <div>
+    <div className="PostAnnouncements-container">
       <h3>{props.author}</h3>
       <p>
         <i>{props.time}</i>

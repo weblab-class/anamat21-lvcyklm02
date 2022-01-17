@@ -32,12 +32,10 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
     useEffect(() => {
       get("/api/group", { groupid: text }).then((groupObj) => {
         get(`/api/user`, { userid: userId }).then((userObj) => {
-          userObj.groupid = groupObj;
+          userObj.groupid.concat(groupObj);
         });
       });
     });
-
-    return <Redirect to="/status/" />;
   };
 
   const onSubmitNew = (text) => {
@@ -60,37 +58,45 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
 
   return (
     <>
-      {userId ? (
-        <GoogleLogout
-          clientId={GOOGLE_CLIENT_ID}
-          buttonText="Logout"
-          onLogoutSuccess={handleLogout}
-          onFailure={(err) => console.log(err)}
-        />
-      ) : (
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          buttonText="Login"
-          onSuccess={handleLogin}
-          onFailure={(err) => console.log(err)}
-        />
-      )}
-      <div className="Skeleton-container">
-        <h1>Ready to build your community?</h1>
-        <h3>
-          Join PodMates with your community members, by joining an existing group or creating a new
-          one!
-        </h3>
-      </div>
-      <div>
-        <div>
-          <h1>Make a new PodMates living community:</h1>
-          <Input defaultText={"New group name"} onSubmit={onSubmitNew} />
+      <div className="Home-container Home-div">
+        <div className="Home-div">
+          <h1>Ready to build your community?</h1>
+          <h2>
+            Join PodMates with your community members, by joining an existing group or creating a
+            new one!
+          </h2>
         </div>
-        <div>
-          <h1>Join an existing living community:</h1>
-          <Input defaultText={"Find group"} onSubmit={onSubmitJoin} />
-          {clicked ? console.log("clicked") : console.log("not clicked")}
+        <div className="Home-subcontainer Home-div">
+          <div className="Home-subsubcontainer Home-div">
+            <h3>First log in here with your Google account:</h3>
+            {userId ? (
+              <GoogleLogout
+                clientId={GOOGLE_CLIENT_ID}
+                buttonText="Logout"
+                onLogoutSuccess={handleLogout}
+                onFailure={(err) => console.log(err)}
+              />
+            ) : (
+              <GoogleLogin
+                clientId={GOOGLE_CLIENT_ID}
+                buttonText="Login"
+                onSuccess={handleLogin}
+                onFailure={(err) => console.log(err)}
+              />
+            )}
+          </div>
+          <div className="Home-subsubcontainer Home-div">
+            <h3>And if you haven't joined a living community group, do one of the following:</h3>
+            <div className="Home-div">
+              <h3>Make a new PodMates living community:</h3>
+              <Input defaultText={"New group name"} type={"text"} onSubmit={onSubmitNew} />
+            </div>
+            <div className="Home-div">
+              <h3>Join an existing living community:</h3>
+              <Input defaultText={"Find group"} type={"text"} onSubmit={onSubmitJoin} />
+              {clicked ? console.log("clicked") : console.log("not clicked")}
+            </div>
+          </div>
         </div>
       </div>
     </>
