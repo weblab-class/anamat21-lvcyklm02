@@ -8,6 +8,8 @@ import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { Redirect } from "@reach/router";
 
+import Input from "../modules/Input.js";
+
 /**
  * Status page
  *
@@ -33,7 +35,7 @@ const Status = (props) => {
       <div className="Status-container">
         <div className="Status-profile-container Status-subcontainer">
           <div className="Status-subcontainer">
-            <h3>A picture goes here</h3>
+            <p>Img goes here</p>
           </div>
           <div className="Status-subcontainer">
             <h1 className="Status-title">Hello {user.name}!</h1>

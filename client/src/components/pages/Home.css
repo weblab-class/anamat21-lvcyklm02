@@ -1,8 +1,25 @@
-.Skeleton-container {
+.Home-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: baseline;
   flex: 5;
+}
+
+.Home-subcontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex: 5;
+  margin: 32px;
+}
+
+.Home-subsubcontainer {
+  margin: 32px;
+  border-radius: 16px;
+  border: black;
+  border-style: solid;
+  padding: 24px;
+}
+
+.Home-div {
   text-align: center;
 }

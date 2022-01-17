@@ -9,23 +9,26 @@ import "./NavBar.css";
 const NavBar = (props) => {
   return (
     <nav className="NavBar-container">
-      <div className="NavBar-title">PodMates</div>
+      <div className="NavBar-title NavBar-title-icon">PodMates</div>
       <div className="NavBar-linkContainer">
         <Link to="/" className="NavBar-link">
-          Skeleton
+          Join
         </Link>
         {props.userId && (
-          <Link to={`/status/${props.userId}`} className="NavBar-link">
+          <Link to={`/status/${props.userId}`} className="NavBar-link NavBar-status-icon">
             Status
           </Link>
         )}
         {props.userId && (
-          <Link to={`/chores/${props.userId}`} className="NavBar-link">
+          <Link to={`/chores/${props.userId}`} className="NavBar-link NavBar-chores-icon">
             Chores
           </Link>
         )}
         {props.userId && (
-          <Link to={`/announcements/${props.userId}`} className="NavBar-link">
+          <Link
+            to={`/announcements/${props.userId}`}
+            className="NavBar-link NavBar-announcements-icon"
+          >
             Announcements
           </Link>
         )}

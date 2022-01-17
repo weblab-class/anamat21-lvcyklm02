@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
+import "./Input.css";
 
 import { socket } from "../../client-socket.js";
 
@@ -28,8 +29,14 @@ const Input = (props) => {
 
   return (
     <div>
-      <input type="text" placeholder={props.defaultText} value={text} onChange={handleChange} />
-      <button type="submit" value="Submit" onClick={handleSubmit}>
+      <input
+        className="Input-input"
+        type={props.type}
+        placeholder={props.defaultText}
+        value={text}
+        onChange={handleChange}
+      />
+      <button className="Input-button" type="submit" value="Submit" onClick={handleSubmit}>
         Submit
       </button>
     </div>
