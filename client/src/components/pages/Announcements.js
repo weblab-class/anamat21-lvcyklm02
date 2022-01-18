@@ -10,13 +10,23 @@ import { get, post } from "../../utilities";
 
 const Announcements = (props) => {
   const [user, setUser] = useState();
+  const [group, setGroup] = useState();
 
   useEffect(() => {
-    get("/api/user", { userid: props.userId }).then((userObj) => setUser(userObj));
+    get("/api/user/group", { userid: props.userId }).then((Obj) => {
+      setUser(Obj.user_);
+      setGroup(Obj.group_);
+    });
   }, []);
+
+  console.log(user);
 
   if (!user) {
     return <div> Loading! </div>;
+  }
+
+  if (!group) {
+    return <div> Please join a group to see your group's announcements! </div>;
   }
 
   const postAnnouncement = (text) => {
@@ -25,7 +35,9 @@ const Announcements = (props) => {
     const newAnnouncement = {
       content: text,
       author: user.name,
+      group: group._id,
     };
+    console.log(newAnnouncement);
 
     post("/api/announcement", newAnnouncement).then(() => {
       console.log("it logged!");
@@ -39,8 +51,8 @@ const Announcements = (props) => {
         <Input defaultText={"Your announcement"} onSubmit={postAnnouncement} />
       </div>
       <div>
-        <h3>All announcements</h3>
-        <PostAnnouncements />
+        <h3>All of {group.name}'s announcements:</h3>
+        <PostAnnouncements groupid={group._id} />
       </div>
     </>
   );

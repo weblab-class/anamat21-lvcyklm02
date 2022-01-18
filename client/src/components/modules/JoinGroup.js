@@ -18,30 +18,62 @@ import { Redirect } from "@reach/router";
  */
 
 const JoinGroup = (props) => {
+  const [user, setUser] = useState();
+
   useEffect(() => {
-    get("/api/group", { groupid: props.groupId }).then((groupObj) => {
-      get(`/api/user`, { userid: props.userId }).then((userObj) => {
-        userObj.groupid = groupObj;
-      });
+    get("/api/user", { userid: props.userId }).then((userObj) => setUser(userObj));
+  }, []);
+
+  console.log(user);
+
+  if (!user) {
+    return <div> Loading! </div>;
+  }
+
+  const onSubmitJoin = (text) => {
+    // const [groupid, setGroupId] = useState(undefined);
+    // setGroupId(text);
+    // useEffect(() => {
+    //   get("/api/group", { groupid: text }).then((groupObj) => {
+    //     get(`/api/user`, { userid: props.userId }).then((userObj) => {
+    //       userObj.groupid.concat(groupObj);
+    //     });
+    //   });
+    // });
+    console.log(text);
+    post("/api/group/add", { groupid: text }).then((newGroupObj) => {
+      console.log("it logged!");
     });
-  });
-
-  return <Redirect to="/status/" />;
-};
-
-const MakeNewGroup = (props) => {
-  console.log("hello");
-  const newgroup = {
-    name: props.name,
-    members: [props.userid],
-    chores: [],
-    points: 0,
   };
-  post("/api/groups", newgroup).then(() => {
-    console.log("it logged!");
-  });
 
-  return <Redirect to="/status/" />;
+  const onSubmitNew = (text) => {
+    console.log(text);
+
+    console.log("hello");
+    const newgroup = {
+      name: text,
+      members: [props.userId],
+      chores: [],
+      points: 0,
+    };
+    post("/api/group", newgroup).then((newGroupObj) => {
+      console.log("it logged!");
+    });
+  };
+
+  return (
+    <>
+      <h3>And if you haven't joined a living community group, do one of the following:</h3>
+      <div className="Home-div">
+        <h3>Make a new PodMates living community:</h3>
+        <Input defaultText={"New group name"} type={"text"} onSubmit={onSubmitNew} />
+      </div>
+      <div className="Home-div">
+        <h3>Join an existing living community:</h3>
+        <Input defaultText={"Find group"} type={"text"} onSubmit={onSubmitJoin} />
+      </div>
+    </>
+  );
 };
 
-export { JoinGroup, MakeNewGroup };
+export default JoinGroup;

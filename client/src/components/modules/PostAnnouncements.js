@@ -13,23 +13,23 @@ import { Redirect } from "@reach/router";
 const AnnouncementRender = (props) => {
   return (
     <div className="PostAnnouncements-container">
-      <h3>{props.author}</h3>
-      <p>
-        <i>{props.time}</i>
-      </p>
+      <div className="PostAnnouncements-announcement-heading">
+        <h3>{props.author}</h3>
+        <p>
+          <i>{props.time}</i>
+        </p>
+      </div>
       <h1>{props.content}</h1>
     </div>
   );
 };
 
-const PostAnnouncements = () => {
+const PostAnnouncements = (props) => {
   const [announcements, setAnnouncements] = useState([]);
 
-  useEffect(() => {
-    get("/api/announcement", {}).then((announcementObjs) => {
-      setAnnouncements(announcementObjs);
-    });
-  }, [announcements]);
+  post("/api/group/announcements", { groupid: props.groupid }).then((announcementObjs) => {
+    setAnnouncements(announcementObjs);
+  });
 
   return (
     <>
@@ -39,6 +39,7 @@ const PostAnnouncements = () => {
             author={ann.author}
             time={ann.time}
             content={ann.content}
+            group={ann.group}
             key={`announcement-${index}`}
           />
         ))}

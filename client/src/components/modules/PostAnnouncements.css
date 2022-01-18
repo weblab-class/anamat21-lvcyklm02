@@ -5,3 +5,8 @@
   width: 60%;
   border-radius: 8px;
 }
+
+.PostAnnouncements-announcement-heading {
+  padding: 4px;
+  border-bottom: solid;
+}

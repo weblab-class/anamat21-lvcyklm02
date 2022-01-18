@@ -3,7 +3,7 @@ import GoogleLogin, { GoogleLogout } from "react-google-login";
 
 import "../../utilities.css";
 import "./Home.css";
-import { JoinGroup, MakeNewGroup } from "../modules/JoinGroup.js";
+import JoinGroup from "../modules/JoinGroup.js";
 import Input from "../modules/Input.js";
 import Status from "./Status.js";
 
@@ -23,39 +23,6 @@ const GOOGLE_CLIENT_ID = "906485839568-enlavp0b4pbshg8vaopc8019aet1rfie.apps.goo
  */
 
 const Home = ({ userId, handleLogin, handleLogout }) => {
-  let clicked = false;
-
-  const onSubmitJoin = (text) => {
-    // const [groupid, setGroupId] = useState(undefined);
-
-    // setGroupId(text);
-    useEffect(() => {
-      get("/api/group", { groupid: text }).then((groupObj) => {
-        get(`/api/user`, { userid: userId }).then((userObj) => {
-          userObj.groupid.concat(groupObj);
-        });
-      });
-    });
-  };
-
-  const onSubmitNew = (text) => {
-    // const [groupname, setGroupName] = useState(undefined);
-
-    // setGroupName(text);
-    console.log(text);
-
-    console.log("hello");
-    const newgroup = {
-      name: text,
-      members: [userId],
-      chores: [],
-      points: 0,
-    };
-    post("/api/group", newgroup).then(() => {
-      console.log("it logged!");
-    });
-  };
-
   return (
     <>
       <div className="Home-container Home-div">
@@ -86,16 +53,7 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
             )}
           </div>
           <div className="Home-subsubcontainer Home-div">
-            <h3>And if you haven't joined a living community group, do one of the following:</h3>
-            <div className="Home-div">
-              <h3>Make a new PodMates living community:</h3>
-              <Input defaultText={"New group name"} type={"text"} onSubmit={onSubmitNew} />
-            </div>
-            <div className="Home-div">
-              <h3>Join an existing living community:</h3>
-              <Input defaultText={"Find group"} type={"text"} onSubmit={onSubmitJoin} />
-              {clicked ? console.log("clicked") : console.log("not clicked")}
-            </div>
+            {userId ? <JoinGroup userId={userId} /> : <p>Log in first to join or make a group!</p>}
           </div>
         </div>
       </div>

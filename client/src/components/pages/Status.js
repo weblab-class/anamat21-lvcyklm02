@@ -19,9 +19,13 @@ import Input from "../modules/Input.js";
 
 const Status = (props) => {
   const [user, setUser] = useState();
+  const [group, setGroup] = useState();
 
   useEffect(() => {
-    get("/api/user", { userid: props.userId }).then((userObj) => setUser(userObj));
+    get("/api/user/group", { userid: props.userId }).then((Obj) => {
+      setUser(Obj.user_);
+      setGroup(Obj.group_);
+    });
   }, []);
 
   console.log(user);
@@ -29,6 +33,11 @@ const Status = (props) => {
   if (!user) {
     return <div> Loading! </div>;
   }
+
+  if (!group) {
+    return <div> Please join a group to see your status! </div>;
+  }
+
   return (
     // building image
     <>
@@ -45,7 +54,7 @@ const Status = (props) => {
           </div>
         </div>
         <div className="Status-subcontainer">
-          <h2 className="Status-title Status-points-container">Ihouse points: 4</h2>
+          <h2 className="Status-title Status-points-container">{group.name} points: 4</h2>
           <h2 className="Status-title Status-points-container">{user.name}'s points: 3</h2>
         </div>
       </div>

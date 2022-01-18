@@ -46,6 +46,8 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
+const updateUser = () => {};
+
 router.post("/chore", (req, res) => {
   const newChore = new Chore({
     content: req.body.content,
@@ -70,9 +72,40 @@ router.get("/user", (req, res) => {
   });
 });
 
+router.get("/user/group", (req, res) => {
+  User.findById(req.query.userid).then((user) => {
+    if (user.groupid.length != 0) {
+      Group.findById(user.groupid[user.groupid.length - 1]).then((group) => {
+        res.send({ user_: user, group_: group });
+      });
+    } else {
+      res.send({ user_: user, group_: null });
+    }
+  });
+});
+
 router.get("/group", auth.ensureLoggedIn, (req, res) => {
-  Group.find({ group: req.query.groupid }).then((group) => {
+  Group.findById(req.query.groupid).then((group) => {
     res.send(group);
+  });
+});
+
+router.post("/group/add", auth.ensureLoggedIn, (req, res) => {
+  Group.findById(req.body.groupid).then((group) => {
+    // do the same logic in creating a new group
+    if (group !== null) {
+      group.members.push(req.user._id);
+      group.save().then((group) => {
+        User.findById(req.user._id).then((user) => {
+          user.groupid.push(group._id);
+          user.save().then((user) => {
+            res.send(group);
+          });
+        });
+      });
+    } else {
+      res.send({ group: null });
+    }
   });
 });
 
@@ -84,11 +117,24 @@ router.post("/group", auth.ensureLoggedIn, (req, res) => {
     points: 0,
   });
 
-  newGroup.save().then((group) => res.send(group));
+  newGroup.save().then((group) => {
+    User.findOne({ _id: req.user._id }).then((user) => {
+      user.groupid.push(group._id);
+      user.save().then((user) => {
+        res.send(group);
+      });
+    });
+  });
 });
 
 router.get("/announcement", (req, res) => {
-  Announcement.find({}).then((ann) => {
+  Announcement.find({ group: req.query.groupid }).then((ann) => {
+    res.send(ann);
+  });
+});
+
+router.post("/group/announcements", (req, res) => {
+  Announcement.find({ group: req.body.groupid }).then((ann) => {
     res.send(ann);
   });
 });
@@ -96,9 +142,9 @@ router.get("/announcement", (req, res) => {
 router.post("/announcement", (req, res) => {
   const newAnnouncement = new Announcement({
     content: req.body.content,
-    author: req.user.name,
+    author: req.body.author,
+    group: req.body.group,
   });
-
   newAnnouncement.save().then((announce) => res.send(announce));
 });
 
