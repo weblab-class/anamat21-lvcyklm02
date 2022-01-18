@@ -5,6 +5,7 @@ const ChoreSchema = new mongoose.Schema({
   freq: Number,
   hand: Number,
   currentlyAssigned: [String],
+  group: String,
 });
 
 // compile model from schema

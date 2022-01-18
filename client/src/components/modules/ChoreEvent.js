@@ -55,11 +55,12 @@ const NewChoreEvent = (props) => {
     setInputHand(value);
   };
   const handleSubmit = () => {
-    console.log(inputD, inputFreq, inputHand);
+    console.log(inputD, inputFreq, inputHand, props.groupid);
     const body = {
       content: inputD,
       freq: inputFreq,
       hand: inputHand,
+      group: props.groupid,
     };
     //eventually adds chores
     post("/api/chore", body).then((chore) => {

@@ -54,6 +54,7 @@ router.post("/chore", (req, res) => {
     freq: req.body.freq,
     hand: req.body.hand,
     currentlyAssigned: [],
+    group: req.body.group,
   });
 
   newChore.save().then((chore) => {
@@ -63,7 +64,7 @@ router.post("/chore", (req, res) => {
 
 router.get("/chore", (req, res) => {
   //return all chores
-  Chore.find({}).then((chores) => res.send(chores));
+  Chore.find({ group: req.query.groupid }).then((chores) => res.send(chores));
 });
 
 router.get("/user", (req, res) => {

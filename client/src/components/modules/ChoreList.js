@@ -8,7 +8,7 @@ const ChoreList = (props) => {
 
   //load chore list from api
   useEffect(() => {
-    get("/api/chore", {}).then((chores) => {
+    get("/api/chore", { groupid: props.group._id }).then((chores) => {
       setChoreList(chores);
     });
   }, [choreList]);
@@ -26,7 +26,7 @@ const ChoreList = (props) => {
   return (
     <>
       <table>
-        <caption>iHouse Chore List</caption>
+        <caption>{props.group.name} Chore List</caption>
         <thead>
           <tr>
             <th>Description</th>
@@ -46,7 +46,7 @@ const ChoreList = (props) => {
           ))}
         </tbody>
       </table>
-      <NewChoreEvent addChoreToState={addChoreToState} />
+      <NewChoreEvent groupid={props.group._id} addChoreToState={addChoreToState} />
     </>
   );
 };

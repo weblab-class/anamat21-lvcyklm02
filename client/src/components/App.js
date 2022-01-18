@@ -48,7 +48,7 @@ const App = () => {
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Status path="/status/:userId" userId={userId} handleLogin={handleLogin} />
-        <Chores path="/chores/:userId" />
+        <Chores path="/chores/:userId" userId={userId} />
         <Announcements path="/announcements/:userId" userId={userId} />
         <NotFound default />
       </Router>
