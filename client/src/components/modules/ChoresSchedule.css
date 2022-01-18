@@ -1,0 +1,18 @@
+.ChoresSchedule-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex: 5;
+}
+
+.ChoresSchedule-days {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 5;
+  font-size: small;
+}
+
+.ChoreSchedule-ids {
+  font-size: 4px;
+}

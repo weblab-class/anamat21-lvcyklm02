@@ -23,6 +23,7 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
+const { route } = require("express/lib/application");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -46,8 +47,6 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-const updateUser = () => {};
-
 router.post("/chore", (req, res) => {
   const newChore = new Chore({
     content: req.body.content,
@@ -62,10 +61,39 @@ router.post("/chore", (req, res) => {
   });
 });
 
+router.post("/chore/assignment", (req, res) => {
+  Chore.findById(req.body.choreid).then((chore) => {
+    chore.currentlyAssigned = req.body.assignment;
+    for (let i = 0; i < req.body.assignment.users.length; i++) {
+      User.findById(req.body.assignment.users[i]).then((user) => {
+        if (!user.current_chores.includes(chore.content)) {
+          user.current_chores.push(chore.content);
+          user.save();
+        }
+      });
+    }
+    chore.save().then((chore) => res.send(chore));
+  });
+});
+
 router.get("/chore", (req, res) => {
-  //return all chores
+  //return all chores in a group
   Chore.find({ group: req.query.groupid }).then((chores) => res.send(chores));
 });
+
+// router.get("/chore/users", (req, res) => {
+//   Chore.find({ group: req.query.groupid }).then((chores) => {
+//     Group.findById(req.query.groupid).then((group) => {
+//       user_names = [];
+//       for (let i = 0; i < group.members.length; i++) {
+//         User.findById(group.members[i]).then((user) => {
+//           user_names.push(user.name);
+//         });
+//       }
+//       res.send({ chores_: chores, users_: group.members.name });
+//     });
+//   });
+// });
 
 router.get("/user", (req, res) => {
   User.findById(req.query.userid).then((user) => {
@@ -99,6 +127,7 @@ router.post("/group/add", auth.ensureLoggedIn, (req, res) => {
       group.save().then((group) => {
         User.findById(req.user._id).then((user) => {
           user.groupid.push(group._id);
+          user.points = 0;
           user.save().then((user) => {
             res.send(group);
           });
@@ -121,9 +150,19 @@ router.post("/group", auth.ensureLoggedIn, (req, res) => {
   newGroup.save().then((group) => {
     User.findOne({ _id: req.user._id }).then((user) => {
       user.groupid.push(group._id);
+      user.points = 0;
       user.save().then((user) => {
         res.send(group);
       });
+    });
+  });
+});
+
+router.post("/user/profile-pic", (req, res) => {
+  User.findById(req.body.user._id).then((user) => {
+    user.profile_picture = req.body.picture;
+    user.save().then((user) => {
+      res.send(user);
     });
   });
 });

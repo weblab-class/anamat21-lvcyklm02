@@ -9,6 +9,7 @@ import { get, post } from "../../utilities";
 import { Redirect } from "@reach/router";
 
 import Input from "../modules/Input.js";
+import ProfilePic from "../modules/ProfilePic.js";
 
 /**
  * Status page
@@ -43,19 +44,27 @@ const Status = (props) => {
     <>
       <div className="Status-container">
         <div className="Status-profile-container Status-subcontainer">
-          <div className="Status-subcontainer">
-            <p>Img goes here</p>
+          <div id="profimg" className="Status-subcontainer Status-single ">
+            <p></p>
           </div>
-          <div className="Status-subcontainer">
+          <div className="Status-subcontainer Status-single ">
             <h1 className="Status-title">Hello {user.name}!</h1>
             <h3>
-              Your task for today is <u>Dishes</u>. Have you done it yet?
+              Your assigned chores are: <u>{user.current_chores}</u>. Have you done it yet?
             </h3>
           </div>
         </div>
         <div className="Status-subcontainer">
-          <h2 className="Status-title Status-points-container">{group.name} points: 4</h2>
-          <h2 className="Status-title Status-points-container">{user.name}'s points: 3</h2>
+          <div className="Status-points-container Status-single ">
+            <h2>
+              {group.name} points: {group.points}
+            </h2>
+          </div>
+          <div className="Status-points-container Status-single ">
+            <h2>
+              {user.name}'s points: {user.points}
+            </h2>
+          </div>
         </div>
       </div>
     </>

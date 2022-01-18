@@ -4,7 +4,7 @@ const ChoreSchema = new mongoose.Schema({
   content: String,
   freq: Number,
   hand: Number,
-  currentlyAssigned: [String],
+  currentlyAssigned: { days: [String], users: [String] },
   group: String,
 });
 
