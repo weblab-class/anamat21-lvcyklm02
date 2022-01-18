@@ -31,18 +31,13 @@ const JoinGroup = (props) => {
   }
 
   const onSubmitJoin = (text) => {
-    // const [groupid, setGroupId] = useState(undefined);
-    // setGroupId(text);
-    // useEffect(() => {
-    //   get("/api/group", { groupid: text }).then((groupObj) => {
-    //     get(`/api/user`, { userid: props.userId }).then((userObj) => {
-    //       userObj.groupid.concat(groupObj);
-    //     });
-    //   });
-    // });
     console.log(text);
     post("/api/group/add", { groupid: text }).then((newGroupObj) => {
-      console.log("it logged!");
+      if (newGroupObj.group === null) {
+        alert("This group does not exist!");
+      } else {
+        console.log("it logged!");
+      }
     });
   };
 
@@ -70,7 +65,7 @@ const JoinGroup = (props) => {
       </div>
       <div className="Home-div">
         <h3>Join an existing living community:</h3>
-        <Input defaultText={"Find group"} type={"text"} onSubmit={onSubmitJoin} />
+        <Input defaultText={"Enter group id"} type={"text"} onSubmit={onSubmitJoin} />
       </div>
     </>
   );

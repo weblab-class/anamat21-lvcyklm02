@@ -52,6 +52,8 @@ const Status = (props) => {
             <h3>
               Your assigned chores are: <u>{user.current_chores}</u>. Have you done it yet?
             </h3>
+            <h3>Your current group is: {group.name}</h3>
+            <p>Does a friend need to join? Your group id is: {group._id}</p>
           </div>
         </div>
         <div className="Status-subcontainer">

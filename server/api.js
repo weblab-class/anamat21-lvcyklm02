@@ -120,23 +120,27 @@ router.get("/group", auth.ensureLoggedIn, (req, res) => {
 });
 
 router.post("/group/add", auth.ensureLoggedIn, (req, res) => {
-  Group.findById(req.body.groupid).then((group) => {
-    // do the same logic in creating a new group
-    if (group !== null) {
-      group.members.push(req.user._id);
-      group.save().then((group) => {
-        User.findById(req.user._id).then((user) => {
-          user.groupid.push(group._id);
-          user.points = 0;
-          user.save().then((user) => {
-            res.send(group);
+  Group.findOne({ _id: req.body.groupid })
+    .then((group) => {
+      // do the same logic in creating a new group
+      if (group !== null) {
+        group.members.push(req.user._id);
+        group.save().then((group) => {
+          User.findById(req.user._id).then((user) => {
+            user.groupid.push(group._id);
+            user.points = 0;
+            user.save().then((user) => {
+              res.send(group);
+            });
           });
         });
-      });
-    } else {
+      } else {
+        res.send({ group: null });
+      }
+    })
+    .catch((error) => {
       res.send({ group: null });
-    }
-  });
+    });
 });
 
 router.post("/group", auth.ensureLoggedIn, (req, res) => {
