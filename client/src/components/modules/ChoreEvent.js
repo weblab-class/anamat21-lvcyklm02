@@ -97,7 +97,9 @@ const NewChoreEvent = (props) => {
         </td>
       </tr>
       <tr>
-        <button onClick={handleSubmit}>Add Chore Event +</button>
+        <td>
+          <button onClick={handleSubmit}>Add Chore Event +</button>
+        </td>
       </tr>
     </>
   );

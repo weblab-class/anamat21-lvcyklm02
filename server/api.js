@@ -81,6 +81,13 @@ router.get("/chore", (req, res) => {
   Chore.find({ group: req.query.groupid }).then((chores) => res.send(chores));
 });
 
+router.post("/chore/delete", (req, res) => {
+  //return all chores in a group
+  Chore.deleteOne({ _id: req.body.chore_id })
+    .then((first) => console.log("deleted successfully"))
+    .catch((second) => console.log("delete failed"));
+});
+
 // router.get("/chore/users", (req, res) => {
 //   Chore.find({ group: req.query.groupid }).then((chores) => {
 //     Group.findById(req.query.groupid).then((group) => {

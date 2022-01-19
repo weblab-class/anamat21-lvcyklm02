@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChoreEvent, NewChoreEvent } from "./ChoreEvent";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 const ChoreList = (props) => {
   // states: list of chore events
@@ -21,6 +21,7 @@ const ChoreList = (props) => {
   const deleteChoreObj = (choreId) => {
     console.log("attempting to delete", choreId);
     //deletes from db using choreId
+    post("/api/chore/delete", { chore_id: choreId });
   };
 
   return (
