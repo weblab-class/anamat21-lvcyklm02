@@ -14,9 +14,13 @@ const User = require("./models/user");
 const Chore = require("./models/chore");
 const Group = require("./models/group");
 const Announcement = require("./models/announcement");
+const Assignment = require("./models/assignment");
 
 // import authentication library
 const auth = require("./auth");
+
+//import generate schedule function
+const gen = require("./generate-schedule");
 
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
@@ -197,6 +201,23 @@ router.post("/announcement", (req, res) => {
     group: req.body.group,
   });
   newAnnouncement.save().then((announce) => res.send(announce));
+});
+
+// ASSIGNMENT
+
+router.post("/assignment", (req, res) => {
+  const newAssignment = new Assignment({
+    userid: req.body.userid,
+    choreid: req.body.choreid,
+    time: req.body.time,
+    status: "incomplete",
+  });
+  newAssignment.save().then((announce) => res.send(announce));
+});
+
+router.post("/generateschedule", (req, res) => {
+  console.log("calling server function");
+  gen.GenerateSchedule("hello");
 });
 
 // anything else falls to this "not found" case
