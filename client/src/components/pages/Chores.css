@@ -16,14 +16,14 @@
   flex-basis: 40rem;
 }
 .container-chores-panel {
-  flex-basis: 5rem;
+  flex-basis: 30rem;
 }
 
 /* spacing */
 
 table {
   table-layout: fixed;
-  width: 200px;
+  width: 100%;
   border-collapse: collapse;
   text-align: left;
 }

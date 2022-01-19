@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { post } from "../../utilities";
+import "./ChoresSchedule.css";
 
 /**
  * ChoreEvent is a component for unique chore contents
@@ -74,10 +75,30 @@ const NewChoreEvent = (props) => {
 
   return (
     <>
-      <input type="text" default="task" value={inputD} onChange={handleChangeD}></input>
-      <input type="text" default="123" value={inputFreq} onChange={handleChangeFreq}></input>
-      <input type="text" default="123" value={inputHand} onChange={handleChangeHand}></input>
-      <button onClick={handleSubmit}>Add Chore Event +</button>
+      <tr>
+        <td>
+          <input className="strInput" type="text" value={inputD} onChange={handleChangeD}></input>
+        </td>
+        <td>
+          <input
+            className="strInput"
+            type="text"
+            value={inputFreq}
+            onChange={handleChangeFreq}
+          ></input>
+        </td>
+        <td>
+          <input
+            className="strInput"
+            type="text"
+            value={inputHand}
+            onChange={handleChangeHand}
+          ></input>
+        </td>
+      </tr>
+      <tr>
+        <button onClick={handleSubmit}>Add Chore Event +</button>
+      </tr>
     </>
   );
 };

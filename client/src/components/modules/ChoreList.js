@@ -30,7 +30,7 @@ const ChoreList = (props) => {
         <thead>
           <tr>
             <th>Description</th>
-            <th>Freq</th>
+            <th>Week freq</th>
             <th>People</th>
           </tr>
         </thead>
@@ -44,9 +44,9 @@ const ChoreList = (props) => {
               deleteChore={() => deleteChoreObj(choreItem._id)}
             />
           ))}
+          <NewChoreEvent groupid={props.group._id} addChoreToState={addChoreToState} />
         </tbody>
       </table>
-      <NewChoreEvent groupid={props.group._id} addChoreToState={addChoreToState} />
     </>
   );
 };

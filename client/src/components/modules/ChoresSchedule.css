@@ -16,3 +16,9 @@
 .ChoreSchedule-ids {
   font-size: 4px;
 }
+
+input[type="text"] {
+  width: 100%;
+  border-radius: 5px;
+  border: 5px;
+}
