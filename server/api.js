@@ -208,11 +208,26 @@ router.post("/announcement", (req, res) => {
 router.post("/assignment", (req, res) => {
   const newAssignment = new Assignment({
     userid: req.body.userid,
+    groupid: req.body.groupid,
     choreid: req.body.choreid,
     time: req.body.time,
     status: "incomplete",
   });
   newAssignment.save().then((announce) => res.send(announce));
+});
+
+router.get("/assignment", (req, res) => {
+  Assignment.find({ group: req.query.groupid }).then((ass) => {
+    res.send(ass);
+  });
+});
+
+router.post("/assignment/delete", (req, res) => {
+  Assignment.deleteMany({ groupid: req.body.groupid })
+    .then((first) => console.log("deleted successfully"))
+    .catch((second) => console.log("delete failed"));
+
+  res.send({ msg: "assignments deleted" });
 });
 
 router.post("/generateschedule", (req, res) => {

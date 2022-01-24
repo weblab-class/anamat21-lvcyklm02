@@ -4,8 +4,9 @@ import "../../utilities.css";
 import ChoreSchedule from "../modules/ChoreSchedule";
 import ChoreList from "../modules/ChoreList";
 import "./Chores.css";
+import WeekDates from "../modules/WeekDates";
 
-import AssignChores from "../modules/ChoreList.js";
+// import AssignChores from "../modules/ChoreList.js"; // need to refactor and pass in
 
 import { socket } from "../../client-socket.js";
 
@@ -32,113 +33,72 @@ const Chores = (props) => {
     return <div> Please join a group to see your group's chores! </div>;
   }
 
+  // +++++++++ TIME HELPER FUNCTIONS +++++++++ //
+  const freq_dict = {
+    1: "M",
+    2: "TS",
+    3: "TRU",
+    4: "MWFU",
+    5: "MTRFS",
+    6: "TWRFSU",
+    7: "MTWRFSU",
+  };
+
+  // +++++++++ END OF HELPER FUNCTIONS +++++++++ //
+
   const assignChores = () => {
-    let choreList = [];
-    let userList = [];
+    // need to delete current assignments in group
+    post("/api/assignment/delete", { groupid: group._id })
+      .then((result) => {
+        let choreList = [];
+        let userList = [];
 
-    get("/api/chore", { groupid: group._id }).then((chores) => {
-      choreList = chores;
-      userList = group.members;
+        get("/api/chore", { groupid: group._id }).then((chores) => {
+          choreList = chores;
+          userList = group.members;
 
-      const randomUsersList = (num) => {
-        let randUsers = [];
+          // helper functions
+          const randomUsersList = (num) => {
+            let randUsers = [];
 
-        for (let i = 0; i < num; i++) {
-          let randomIndex = Math.floor(Math.random() * userList.length);
-          let randomUser = userList[randomIndex];
-          randUsers.push(randomUser);
-        }
+            for (let i = 0; i < num; i++) {
+              let randomIndex = Math.floor(Math.random() * userList.length);
+              let randomUser = userList[randomIndex];
+              randUsers.push(randomUser);
+            }
 
-        return randUsers;
-      };
-
-      for (let i = 0; i < choreList.length; i++) {
-        if (choreList[i].freq === 1) {
-          const assignment = {
-            days: ["Su"],
-            users: randomUsersList(choreList[i].hand),
+            return randUsers;
           };
 
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-        if (choreList[i].freq === 2) {
-          const assignment = {
-            days: ["M", "Th"],
-            users: randomUsersList(choreList[i].hand),
+          //takes todays date and finds closest days
+          const findNewDate = (index, freq) => {
+            // find appropiate letter day
+            const letter_day = freq_dict[freq].charAt(index);
+            return WeekDates()[letter_day];
           };
 
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-        if (choreList[i].freq === 3) {
-          const assignment = {
-            days: ["M", "W", "F"],
-            users: randomUsersList(choreList[i].hand),
-          };
+          // main function:
+          // for each chore
+          for (let i = 0; i < choreList.length; i++) {
+            // find people that will be random pool
+            const chore_people = randomUsersList(choreList[i].hand);
 
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
+            // for each frequency, make new assignment
+            for (let j = 0; j < choreList[i].freq; j++) {
+              post("/api/assignment", {
+                userid: chore_people[j],
+                choreid: choreList[i]._id,
+                groupid: group._id,
+                time: findNewDate(j, choreList[i].freq),
+              }).then((choreObj) => {
+                console.log("it logged!");
+              });
             }
-          );
-        }
-        if (choreList[i].freq === 4) {
-          const assignment = {
-            days: ["Su", "Tu", "Th", "Sa"],
-            users: randomUsersList(choreList[i].hand),
-          };
-
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-        if (choreList[i].freq === 5) {
-          const assignment = {
-            days: ["Su", "Tu", "W", "Th", "Sa"],
-            users: randomUsersList(choreList[i].hand),
-          };
-
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-        if (choreList[i].freq === 6) {
-          const assignment = {
-            days: ["M", "Tu", "W", "Th", "F", "Sa"],
-            users: randomUsersList(choreList[i].hand),
-          };
-
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-        if (choreList[i].freq > 6) {
-          const assignment = {
-            days: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
-            users: randomUsersList(choreList[i].hand),
-          };
-
-          post("/api/chore/assignment", { choreid: choreList[i]._id, assignment: assignment }).then(
-            (choreObj) => {
-              console.log("it logged!");
-            }
-          );
-        }
-      }
-    });
+          }
+        });
+      })
+      .catch(() => console.log("ERROR in deletion"));
+    // need to refresh page and states
   };
 
   return (

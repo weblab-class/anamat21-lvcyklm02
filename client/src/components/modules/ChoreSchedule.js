@@ -3,21 +3,27 @@ import React, { useState, useEffect } from "react";
 import "../../utilities.css";
 import "./ChoresSchedule.css";
 
-import AssignChores from "./AssignChores.js";
-
 import { get, post } from "../../utilities";
 
 const ChoreSchedule = (props) => {
-  const [choreList, setChoreList] = useState([]);
+  const [assignmentList, setAssignmentList] = useState([]);
   const [userList, setUserList] = useState([]);
 
   //load chore and users list from api
+  // useEffect(() => {
+  //   get("/api/chore", { groupid: props.group._id }).then((chores) => {
+  //     setChoreList(chores);
+  //     setUserList(props.group.members);
+  //   });
+  // }, [choreList, userList]);
+
   useEffect(() => {
-    get("/api/chore", { groupid: props.group._id }).then((chores) => {
-      setChoreList(chores);
+    get("/api/assignment", { groupid: props.group._id }).then((assignments) => {
+      setAssignmentList(assignments);
       setUserList(props.group.members);
+      console.log(assignmentList);
     });
-  }, [choreList, userList]);
+  }, [assignmentList, userList]);
 
   let mondays = [];
   let tuesdays = [];
@@ -27,65 +33,20 @@ const ChoreSchedule = (props) => {
   let saturdays = [];
   let sundays = [];
 
-  for (let i = 0; i < choreList.length; i++) {
-    if (choreList[i].currentlyAssigned === undefined) {
-      break;
-    }
+  for (let i = 0; i < assignmentList.length; i++) {
+    // identify relevant info
+    get("/api/chore", { _id: assignmentList[i].choreid }).then((chore) => {
+      // console.log(my_chore.content);
+      let chore_name = chore.content;
 
-    let chore_name = choreList[i].content;
-    let chore_users = choreList[i].currentlyAssigned.users;
-    let chore_days = choreList[i].currentlyAssigned.days;
-
-    if (chore_days.includes("M")) {
-      mondays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-
-    if (chore_days.includes("Tu")) {
-      tuesdays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-    if (chore_days.includes("W")) {
-      wednesdays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-    if (chore_days.includes("Th")) {
-      thursdays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-    if (chore_days.includes("F")) {
-      fridays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-    if (chore_days.includes("Sa")) {
-      saturdays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
-    if (chore_days.includes("Su")) {
-      sundays.push(
-        <p className="ChoreSchedule-ids">
-          {chore_name}: {chore_users}
-        </p>
-      );
-    }
+      // if (chore_days.includes("M")) {
+      //   mondays.push(
+      //     <p className="ChoreSchedule-ids">
+      //       {chore_name}: {chore_users}
+      //     </p>
+      //   );
+      // }
+    });
   }
 
   return (
