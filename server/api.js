@@ -85,6 +85,11 @@ router.get("/chore", (req, res) => {
   Chore.find({ group: req.query.groupid }).then((chores) => res.send(chores));
 });
 
+router.get("/chore/byid", (req, res) => {
+  //return all chores in a group
+  Chore.find({ _id: req.query.choreid }).then((chores) => res.send(chores));
+});
+
 router.post("/chore/delete", (req, res) => {
   //return all chores in a group
   Chore.deleteOne({ _id: req.body.chore_id })
@@ -212,14 +217,17 @@ router.post("/assignment", (req, res) => {
     choreid: req.body.choreid,
     time: req.body.time,
     status: "incomplete",
+    content: req.body.content,
   });
   newAssignment.save().then((announce) => res.send(announce));
 });
 
 router.get("/assignment", (req, res) => {
-  Assignment.find({ group: req.query.groupid }).then((ass) => {
-    res.send(ass);
-  });
+  Assignment.find({ groupid: req.query.groupid })
+    .then((ass) => {
+      res.send(ass);
+    })
+    .catch((error) => console.log("error"));
 });
 
 router.post("/assignment/delete", (req, res) => {

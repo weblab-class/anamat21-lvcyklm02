@@ -1,5 +1,11 @@
 import React from "react";
 
+/*
+ * Maps the seven week day letters to the next actual dates
+ *
+ *
+ */
+
 const WeekDates = () => {
   const todaysDate = new Date();
   const addDays = (date, days) => {

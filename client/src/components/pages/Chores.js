@@ -90,6 +90,7 @@ const Chores = (props) => {
                 choreid: choreList[i]._id,
                 groupid: group._id,
                 time: findNewDate(j, choreList[i].freq),
+                content: choreList[i].content,
               }).then((choreObj) => {
                 console.log("it logged!");
               });
