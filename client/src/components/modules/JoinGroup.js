@@ -63,11 +63,15 @@ const JoinGroup = (props) => {
       <h3>And if you haven't joined a living community group, do one of the following:</h3>
       <div className="Home-div">
         <h3>Make a new PodMates living community:</h3>
-        <Input defaultText={"New group name"} type={"text"} onSubmit={onSubmitNew} />
+        <div className="Home-subcontainer">
+          <Input defaultText={"New group name"} type={"text"} onSubmit={onSubmitNew} />
+        </div>
       </div>
       <div className="Home-div">
         <h3>Join an existing living community:</h3>
-        <Input defaultText={"Enter group id"} type={"text"} onSubmit={onSubmitJoin} />
+        <div className="Home-subcontainer">
+          <Input defaultText={"Enter group id"} type={"text"} onSubmit={onSubmitJoin} />
+        </div>
       </div>
       {clicked ? <Redirect to={`/status/${props.userId}`} /> : <div></div>}
     </>
