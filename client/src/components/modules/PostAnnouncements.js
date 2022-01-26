@@ -178,7 +178,7 @@ const PostAnnouncements = (props) => {
         setAnnouncements(announcementObjs);
       }
     );
-  }, []);
+  }, [props.tags]);
 
   return (
     <>
