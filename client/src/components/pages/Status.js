@@ -21,15 +21,19 @@ import ProfilePic from "../modules/ProfilePic.js";
 const Status = (props) => {
   const [user, setUser] = useState();
   const [group, setGroup] = useState();
+  const [chores, setChores] = useState([]);
 
   useEffect(() => {
     get("/api/user/group", { userid: props.userId }).then((Obj) => {
       setUser(Obj.user_);
       setGroup(Obj.group_);
     });
+    get("/api/assignment/byuser", { userid: props.userId }).then((all) => {
+      for (let step = 0; step < all.length; step++) {
+        setChores(...chores, all[step].content);
+      }
+    });
   }, []);
-
-  console.log(user);
 
   if (!user) {
     return <div> Loading! </div>;
@@ -39,6 +43,9 @@ const Status = (props) => {
     return <div> Please join a group to see your status! </div>;
   }
 
+  const changeStatus = () => {
+    console.log("TO-DO: Change chore status");
+  };
   return (
     // building image
     <>
@@ -50,8 +57,9 @@ const Status = (props) => {
           <div className="Status-subcontainer Status-single ">
             <h1 className="Status-title">Hello {user.name}!</h1>
             <h3>
-              Your assigned chores are: <u>{user.current_chores}</u>. Have you done it yet?
+              Your assigned chores are: <u>{chores}</u>. Have you done it yet?
             </h3>
+            <button onClick={changeStatus}>Yes</button>
             <h3>Your current group is: {group.name}</h3>
             <p>Does a friend need to join? Your group id is: {group._id}</p>
           </div>

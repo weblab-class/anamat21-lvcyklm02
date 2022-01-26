@@ -245,6 +245,14 @@ router.get("/assignment", (req, res) => {
     .catch((error) => console.log("error"));
 });
 
+router.get("/assignment/byuser", (req, res) => {
+  Assignment.find({ userid: req.query.userid })
+    .then((ass) => {
+      res.send(ass);
+    })
+    .catch((error) => console.log("error"));
+});
+
 router.post("/assignment/delete", (req, res) => {
   Assignment.deleteMany({ groupid: req.body.groupid })
     .then((first) => console.log("deleted successfully"))

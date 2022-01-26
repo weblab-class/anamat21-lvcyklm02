@@ -3,22 +3,47 @@
   flex-direction: column;
   align-items: baseline;
   flex: 5;
+  width: 100%;
 }
 
 .ChoresSchedule-day-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: left;
   flex: 5;
   font-size: small;
+  width: 100%;
+}
+
+.ChoresSchedule-chore-container {
+  width: 100%;
 }
 
 .ChoresSchedule-date {
   width: 100px;
+  font-weight: bold;
 }
 
-.ChoreSchedule-ids {
-  font-size: 4px;
+.ChoresSchedule-label {
+  font-size: medium;
+}
+
+.ChoresSchedule-chore {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.ChoresSchedule-content {
+  width: 30%;
+}
+
+.ChoresSchedule-user {
+  width: 40%;
+}
+
+.ChoresSchedule-status {
+  width: 20%;
 }
 
 input[type="text"] {
