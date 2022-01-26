@@ -63,12 +63,17 @@ const ChoreSchedule = (props) => {
     <>
       <h1>Chores Schedule WE: {string_days[6]}</h1>
       <div className="ChoresSchedule-container">
+        <div className="ChoresSchedule-day-container">
+          <div className="ChoresSchedule-date">Day</div>
+          <div className="ChoresSchedule-content">Chore</div>
+        </div>
+
         {var_array.map((day_list, index) => (
           <div className="ChoresSchedule-day-container" key={"day" + index}>
             <div className="ChoresSchedule-date">{string_days[index]}</div>
             <div className="ChoresSchedule-items-container">
               {day_list.map((item, index) => (
-                <div className="ChoresSchedule-items" key={"choreitem" + index}>
+                <div className="ChoresSchedule-content" key={"choreitem" + index}>
                   {item}
                 </div>
               ))}
