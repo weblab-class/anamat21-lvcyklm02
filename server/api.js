@@ -199,11 +199,26 @@ router.post("/group/announcements", (req, res) => {
   });
 });
 
+router.post("/search/announcements", (req, res) => {
+  if (req.body.tags.length === 0) {
+    Announcement.find({ group: req.body.groupid }).then((ann) => {
+      res.send(ann);
+    });
+  } else {
+    Announcement.find({ group: req.body.groupid, tags: { $in: req.body.tags } }).then((ann) => {
+      res.send(ann);
+    });
+  }
+});
+
 router.post("/announcement", (req, res) => {
   const newAnnouncement = new Announcement({
+    title: req.body.title,
     content: req.body.content,
     author: req.body.author,
     group: req.body.group,
+    tags: req.body.tags,
+    type: req.body.type,
   });
   newAnnouncement.save().then((announce) => res.send(announce));
 });

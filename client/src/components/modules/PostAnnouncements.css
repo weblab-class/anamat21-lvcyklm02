@@ -7,6 +7,47 @@
 }
 
 .PostAnnouncements-announcement-heading {
+  display: flex;
+  flex-direction: column;
+  flex: 5;
   padding: 4px;
+  margin: 5px;
   border-bottom: solid;
+}
+
+.PostAnnouncements-announcement-sub-heading {
+  display: flex;
+  flex-direction: row;
+  flex: 5;
+  align-items: center;
+}
+
+.PostAnnouncements-announcement-text {
+  padding: 8px;
+  margin: 8px;
+}
+
+.PostAnnouncements-announcement-tags {
+  background-color: #a7cab1;
+  border-radius: 5px;
+}
+
+.PostAnnouncements-new-announcement-container {
+  display: flex;
+  flex-direction: column;
+  flex: 5;
+  border: solid;
+  padding: 8px;
+  margin: 8px;
+  width: 60%;
+  border-radius: 8px;
+  align-items: baseline;
+}
+
+.PostAnnouncements-inputs {
+  border: solid;
+  font-family: "Montserrat", sans-serif;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: white;
 }
