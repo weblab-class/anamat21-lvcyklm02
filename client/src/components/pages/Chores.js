@@ -23,8 +23,6 @@ const Chores = (props) => {
     });
   }, []);
 
-  console.log(user);
-
   if (!user) {
     return <div> Loading! </div>;
   }
@@ -58,6 +56,7 @@ const Chores = (props) => {
           userList = group.members;
 
           // helper functions
+          // BUG: want to randomize order once and use it for the whole assignment
           const randomUsersList = (num) => {
             let randUsers = [];
 
@@ -85,8 +84,9 @@ const Chores = (props) => {
 
             // for each frequency, make new assignment
             for (let j = 0; j < choreList[i].freq; j++) {
+              let user_index = j % chore_people.length;
               post("/api/assignment", {
-                userid: chore_people[j],
+                userid: chore_people[user_index],
                 choreid: choreList[i]._id,
                 groupid: group._id,
                 time: findNewDate(j, choreList[i].freq),
