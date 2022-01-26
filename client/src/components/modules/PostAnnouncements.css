@@ -25,6 +25,7 @@
 .PostAnnouncements-announcement-text {
   padding: 8px;
   margin: 8px;
+  overflow: auto;
 }
 
 .PostAnnouncements-announcement-tags {
@@ -39,7 +40,7 @@
   border: solid;
   padding: 8px;
   margin: 8px;
-  width: 60%;
+  width: 100%;
   border-radius: 8px;
   align-items: baseline;
 }

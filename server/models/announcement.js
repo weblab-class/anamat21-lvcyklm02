@@ -8,6 +8,7 @@ const AnnouncementSchema = new mongoose.Schema({
   time: { type: Date, default: Date.now },
   tags: [String],
   type: String,
+  pollOptions: [String],
 });
 
 // compile model from schema

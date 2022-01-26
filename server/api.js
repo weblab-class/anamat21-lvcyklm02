@@ -15,6 +15,7 @@ const Chore = require("./models/chore");
 const Group = require("./models/group");
 const Announcement = require("./models/announcement");
 const Assignment = require("./models/assignment");
+const Poll = require("./models/poll");
 
 // import authentication library
 const auth = require("./auth");
@@ -96,6 +97,13 @@ router.post("/chore/delete", (req, res) => {
     .then((first) => console.log("deleted successfully"))
     .catch((second) => console.log("delete failed"));
 });
+
+// router.post("/poll/delete", (req, res) => {
+//   //return all chores in a group
+//   Poll.deleteMany({})
+//     .then((first) => console.log("deleted successfully"))
+//     .catch((second) => console.log("delete failed"));
+// });
 
 // router.get("/chore/users", (req, res) => {
 //   Chore.find({ group: req.query.groupid }).then((chores) => {
@@ -219,8 +227,52 @@ router.post("/announcement", (req, res) => {
     group: req.body.group,
     tags: req.body.tags,
     type: req.body.type,
+    pollOptions: req.body.pollOptions,
   });
   newAnnouncement.save().then((announce) => res.send(announce));
+});
+
+router.post("/announcement/poll", (req, res) => {
+  const newAnnouncement = new Announcement({
+    title: req.body.newAnnouncement.title,
+    content: req.body.newAnnouncement.content,
+    author: req.body.newAnnouncement.author,
+    group: req.body.newAnnouncement.group,
+    tags: req.body.newAnnouncement.tags,
+    type: req.body.newAnnouncement.type,
+    pollOptions: req.body.newAnnouncement.pollOptions,
+  });
+  newAnnouncement.save().then((announce) => {
+    const newPoll = new Poll({
+      announcementId: announce._id,
+      pollOptions: req.body.newpoll.pollopt,
+      votes: req.body.newpoll.votes,
+      usersWhoVoted: [],
+    });
+    newPoll.save().then((poll) => res.send(poll));
+  });
+});
+
+router.get("/poll", (req, res) => {
+  Poll.findOne({ announcementId: req.query.annid }).then((poll) => {
+    res.send(poll);
+  });
+});
+
+router.post("/poll/vote", (req, res) => {
+  Poll.findById(req.body.pollid).then((poll) => {
+    copyArr = [];
+    for (let i = 0; i < poll.votes.length; i++) {
+      if (i === poll.pollOptions.findIndex((element) => element === req.body.option)) {
+        copyArr.push(poll.votes[i] + 1);
+      } else {
+        copyArr.push(poll.votes[i]);
+      }
+    }
+    poll.votes = copyArr;
+    poll.usersWhoVoted.push(req.body.uservoted);
+    poll.save().then((newpoll) => res.send(newpoll));
+  });
 });
 
 // ASSIGNMENT

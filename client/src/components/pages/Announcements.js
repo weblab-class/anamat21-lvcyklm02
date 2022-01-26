@@ -23,8 +23,6 @@ const Announcements = (props) => {
     });
   }, []);
 
-  console.log(user);
-
   if (!user) {
     return <div> Loading! </div>;
   }
@@ -33,8 +31,28 @@ const Announcements = (props) => {
     return <div> Please join a group to see your group's announcements! </div>;
   }
 
-  const postAnnouncement = (title, content, tags, type) => {
-    console.log(user);
+  const postPoll = (ann) => {
+    if (type === "Poll") {
+      let votes = [];
+      for (let i = 0; i < ann.pollOptions.length; i++) {
+        votes.push(0);
+      }
+      console.log("am i here?");
+
+      const newpoll = {
+        annid: ann._id,
+        pollopt: ann.pollOptions,
+        votes: votes,
+      };
+
+      post("/api/announcement/poll", newpoll).then((newPollObj) => {
+        console.log("it logged! (poll)");
+      });
+    }
+  };
+
+  const postAnnouncement = (title, content, tags, type, pollOptions) => {
+    console.log("im at post annoucne");
 
     const newAnnouncement = {
       title: title,
@@ -43,12 +61,29 @@ const Announcements = (props) => {
       group: group._id,
       tags: tags.split(" "),
       type: type,
+      pollOptions: pollOptions.split(" "),
     };
-    console.log(newAnnouncement);
 
-    post("/api/announcement", newAnnouncement).then(() => {
-      console.log("it logged!");
-    });
+    if (type === "Poll") {
+      let votes = [];
+      for (let i = 0; i < newAnnouncement.pollOptions.length; i++) {
+        votes.push(0);
+      }
+      console.log("am i here?");
+
+      const newpoll = {
+        pollopt: newAnnouncement.pollOptions,
+        votes: votes,
+      };
+
+      post("/api/announcement/poll", { newAnnouncement, newpoll }).then((newPollObj) => {
+        console.log("it logged! (poll)");
+      });
+    } else {
+      post("/api/announcement", newAnnouncement).then((ann) => {
+        console.log("it logged! (announcement)");
+      });
+    }
   };
 
   const deleteTag = (tag) => {
@@ -61,7 +96,9 @@ const Announcements = (props) => {
     tagsHtml.push(
       <div className="Announcements-announcement-tags">
         <p>{tags[i]}</p>
-        <button onClick={deleteTag}>x</button>
+        <button className="Announcements-cancel-button" onClick={() => deleteTag(tags[i])}>
+          x
+        </button>
       </div>
     );
   }
@@ -88,7 +125,7 @@ const Announcements = (props) => {
           </div>
           <div>
             <h3>All of {group.name}'s announcements:</h3>
-            <PostAnnouncements groupid={group._id} tags={tags} />
+            <PostAnnouncements userid={user._id} groupid={group._id} tags={tags} />
           </div>
         </div>
         <div className="Announcements-search-subcontainer">

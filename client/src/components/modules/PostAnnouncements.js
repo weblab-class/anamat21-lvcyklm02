@@ -4,6 +4,7 @@ import "../../utilities.css";
 import "./PostAnnouncements.css";
 
 import Input from "./Input.js";
+import Polls from "./Polls.js";
 
 import { socket } from "../../client-socket.js";
 
@@ -13,8 +14,9 @@ import { Redirect } from "@reach/router";
 const NewAnnouncement = (props) => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState("");
   const [type, setType] = useState("");
+  const [pollOptions, setPollOptions] = useState("");
 
   const handleChangeContent = (event) => {
     setContent(event.target.value);
@@ -28,35 +30,32 @@ const NewAnnouncement = (props) => {
   const handleChangeType = (event) => {
     setType(event.target.value);
   };
+  const handleChangePollOptions = (event) => {
+    setPollOptions(event.target.value);
+  };
 
   const handleSubmit = (event) => {
     console.log("im here");
-    props.onSubmit(content, title, tags, type);
+    props.onSubmit(content, title, tags, type, pollOptions);
+  };
+
+  const addPoll = () => {
+    return (
+      <div>
+        <input
+          className="PostAnnouncements-inputs"
+          type="text"
+          name="title"
+          onChange={handleChangePollOptions}
+          defaultValue="Add poll options separated by a space"
+        ></input>
+      </div>
+    );
   };
 
   return (
     <div className="PostAnnouncements-new-announcement-container">
       <form name="announcementForm" onSubmit={handleSubmit}>
-        <input
-          className="PostAnnouncements-inputs"
-          type="text"
-          name="title"
-          onChange={handleChangeTitle}
-          defaultValue="Subject"
-        ></input>
-        <textarea
-          className="PostAnnouncements-inputs"
-          name="content"
-          onChange={handleChangeContent}
-          defaultValue="Announcement"
-        ></textarea>
-        <input
-          className="PostAnnouncements-inputs"
-          type="text"
-          name="tags"
-          onChange={handleChangeTags}
-          defaultValue="Add tags, each one separated by a space"
-        ></input>
         <div>
           <input
             className="PostAnnouncements-inputs"
@@ -77,16 +76,33 @@ const NewAnnouncement = (props) => {
             onChange={handleChangeType}
           ></input>
           <label htmlFor="typeChoice2">Poll</label>
-
+        </div>
+        <div>
           <input
             className="PostAnnouncements-inputs"
-            type="radio"
-            id="typeChoice3"
-            name="contact"
-            value="shoutout"
-            onChange={handleChangeType}
+            type="text"
+            name="title"
+            onChange={handleChangeTitle}
+            defaultValue="Subject"
           ></input>
-          <label htmlFor="typeChoice3">Shoutout</label>
+        </div>
+        <div>
+          <textarea
+            className="PostAnnouncements-inputs"
+            name="content"
+            onChange={handleChangeContent}
+            defaultValue="Announcement"
+          ></textarea>
+        </div>
+        <div>{type === "Poll" ? addPoll() : <div></div>}</div>
+        <div>
+          <input
+            className="PostAnnouncements-inputs"
+            type="text"
+            name="tags"
+            onChange={handleChangeTags}
+            defaultValue="Add tags separated by a space"
+          ></input>
         </div>
         <input className="PostAnnouncements-inputs" type="submit" value="submit"></input>
       </form>
@@ -95,6 +111,14 @@ const NewAnnouncement = (props) => {
 };
 
 const AnnouncementRender = (props) => {
+  let [pollObj, setPollObj] = useState(undefined);
+
+  if (props.type === "Poll") {
+    get("/api/poll", { annid: props.id }).then((pollObj) => {
+      setPollObj(pollObj);
+    });
+  }
+
   let timeWord = "seconds";
 
   let announTime = new Date(props.time);
@@ -122,6 +146,10 @@ const AnnouncementRender = (props) => {
     );
   }
 
+  if (props.type === "Props" && pollObj === undefined) {
+    return <div>loading!!</div>;
+  }
+
   return (
     <div className="PostAnnouncements-container">
       <div className="PostAnnouncements-announcement-heading">
@@ -136,6 +164,7 @@ const AnnouncementRender = (props) => {
         <div className="PostAnnouncements-announcement-sub-heading">{tagsList}</div>
       </div>
       <p className="PostAnnouncements-announcement-text">{props.title}</p>
+      {!pollObj ? <div></div> : <Polls poll={pollObj} userid={props.userid} />}
     </div>
   );
 };
@@ -143,24 +172,30 @@ const AnnouncementRender = (props) => {
 const PostAnnouncements = (props) => {
   const [announcements, setAnnouncements] = useState([]);
 
-  post("/api/search/announcements", { groupid: props.groupid, tags: props.tags }).then(
-    (announcementObjs) => {
-      setAnnouncements(announcementObjs);
-    }
-  );
+  useEffect(() => {
+    post("/api/search/announcements", { groupid: props.groupid, tags: props.tags }).then(
+      (announcementObjs) => {
+        setAnnouncements(announcementObjs);
+      }
+    );
+  }, []);
 
   return (
     <>
       <div>
         {announcements.reverse().map((ann, index) => (
           <AnnouncementRender
+            id={ann._id}
             title={ann.title}
             author={ann.author}
             time={ann.time}
             content={ann.content}
             group={ann.group}
             tags={ann.tags}
+            pollOptions={ann.pollOptions}
+            type={ann.type}
             key={`announcement-${index}`}
+            userid={props.userid}
           />
         ))}
       </div>

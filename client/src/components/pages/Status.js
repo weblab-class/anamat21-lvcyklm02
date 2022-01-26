@@ -48,12 +48,11 @@ const Status = (props) => {
   };
   return (
     // building image
+    //<ProfilePic user={user} />
     <>
       <div className="Status-container">
         <div className="Status-profile-container Status-subcontainer">
-          <div id="profimg" className="Status-subcontainer Status-single ">
-            <ProfilePic user={user} />
-          </div>
+          <div id="profimg" className="Status-subcontainer Status-single "></div>
           <div className="Status-subcontainer Status-single ">
             <h1 className="Status-title">Hello {user.name}!</h1>
             <h3>

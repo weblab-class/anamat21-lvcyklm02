@@ -4,6 +4,7 @@ import "../../utilities.css";
 //import "./JoinGroup.css";
 
 import Input from "./Input.js";
+import Status from "../pages/Status.js";
 
 import { socket } from "../../client-socket.js";
 
@@ -18,6 +19,7 @@ import { Redirect } from "@reach/router";
  */
 
 const JoinGroup = (props) => {
+  const [clicked, setClicked] = useState(false);
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const JoinGroup = (props) => {
       if (newGroupObj.group === null) {
         alert("This group does not exist!");
       } else {
-        console.log("it logged!");
+        setClicked(true);
       }
     });
   };
@@ -52,7 +54,7 @@ const JoinGroup = (props) => {
       points: 0,
     };
     post("/api/group", newgroup).then((newGroupObj) => {
-      console.log("it logged!");
+      setClicked(true);
     });
   };
 
@@ -67,6 +69,7 @@ const JoinGroup = (props) => {
         <h3>Join an existing living community:</h3>
         <Input defaultText={"Enter group id"} type={"text"} onSubmit={onSubmitJoin} />
       </div>
+      {clicked ? <Redirect to={`/status/${props.userId}`} /> : <div></div>}
     </>
   );
 };
