@@ -1,13 +1,13 @@
 .ChoresSchedule-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-evenly;
   flex: 5;
 }
 
-.ChoresSchedule-days {
+.ChoresSchedule-day-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
   flex: 5;
   font-size: small;
