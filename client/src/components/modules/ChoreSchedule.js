@@ -29,7 +29,7 @@ const ChoreSchedule = (props) => {
   for (const [key, value] of Object.entries(weekdates)) {
     string_days = [
       ...string_days,
-      letters[value.getDay()] + " " + value.getMonth() + 1 + "/" + value.getDate(),
+      letters[value.getDay()] + " " + (value.getMonth() + 1) + "/" + value.getDate(),
     ];
   }
 
